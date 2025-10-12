@@ -49,3 +49,55 @@ fn number_conversion(){
     let e: i8 = d as i8;
     println!("e: {}", e); //e: 0 (because of overflow)
 }
+
+#[test]
+fn augmented_assignment(){
+    let mut age = 20;
+    println!("Age: {}", age);
+    age += 1;
+    println!("Age: {}", age);
+    age -= 1;
+    println!("Age: {}", age);
+    age *= 2;
+    println!("Age: {}", age);
+    age /= 2;
+    println!("Age: {}", age);
+    age %= 3;
+    println!("Age: {}", age);
+}
+
+#[test]
+fn char_type(){
+    let letter = 'A';
+    println!("Letter: {}", letter);
+    let emoji = '😀';
+    println!("Emoji: {}", emoji);
+}
+
+#[test]
+fn tuple(){
+    let person: (&str, i32) = ("Haikal Nuril", 20);
+    println!("Name: {}, Age: {}", person.0, person.1);
+    println!("{:?}", person);
+    let (name, age) = person;
+    println!("Name: {}, Age: {}", name, age);
+
+    let mut person2 = ("Haikal Nuril", 20);
+    person2.0 = "Uriel";
+    person2.1 = 21;
+    println!("Name: {}, Age: {}", person2.0, person2.1);
+}
+
+// unit tuple
+fn unit(){
+    println!("hello");
+}
+
+#[test]
+fn test_unit(){
+    let result: () = unit();
+    println!("Result: {:?}", result);
+
+    let test: () = ();
+    println!("Test: {:?}", test);
+}
