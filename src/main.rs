@@ -208,3 +208,61 @@ fn clone() {
     println!("name1: {}", name1);
     println!("name2: {}", name2);
 }
+
+#[test]
+fn let_statement() {
+    let value = 7;
+    let result: &str;
+
+    // in rust the if statement is an expression that can return a value so that create a let statement
+    if value >= 8 {
+        result = "good";
+    } else {
+        result = "bad";
+    }
+
+    // this is the same as above but more concise
+
+    // let result: &str = if value >= 8 {
+    //     "good"
+    // } else {
+    //     "bad"
+    // };
+
+    println!("result: {}", result);
+}
+
+#[test]
+fn loop_return_value() {
+    let mut counter = 0;
+
+    let result = loop {
+        counter += 1;
+
+        if counter > 10 {
+            break counter * 2; // return value from loop
+        }
+    };
+
+    println!("result: {}", result);
+}
+
+#[test]
+fn loop_label() {
+    let mut number = 1;
+    'outer: loop {
+        let mut counter = 1;
+        loop {
+            if number > 10 {
+                break 'outer;
+            }
+
+            println!(" {} x {} = {}", number, counter, number * counter);
+            counter += 1;
+            if counter > 10 {
+                break;
+            }
+        }
+        number += 1;
+    }
+}
