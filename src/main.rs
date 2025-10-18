@@ -1,3 +1,5 @@
+use std::array;
+
 fn main() {
     println!("Hello, world!");
 }
@@ -265,4 +267,68 @@ fn loop_label() {
         }
         number += 1;
     }
+}
+
+#[test]
+fn array_iteration() {
+    let array: [&str; 3] = ["Haikal", "Nuril", "Abiyit"];
+
+    for value in array{
+        println!("value: {}", value);
+    }
+}
+
+#[test]
+fn range_iteration() {
+    let array:[i32; 5] = [1,2,3,4,5];
+
+    let range = 0..5;
+
+    for i in range{
+        println!("array[{}]: {}", i, array[i]);
+    }
+}
+
+#[test]
+fn range_inclusive() {
+    let array:[i32; 5] = [1,2,3,4,5];
+
+    let range = 0..=4;
+
+    for i in range{
+        println!("array[{}]: {}", i, array[i]);
+    }
+}
+
+fn factorial_loop(n: i32) -> i32 {
+    if n < 1 {
+        return 0;
+    }
+    let mut result = 1;
+    for i in 1..=n {
+        result *= i;
+    }
+    result
+}
+
+#[test]
+fn test_factorial_function_return_value() {
+    let result = factorial_loop(5);
+    println!("Factorial: {}", result);
+}
+
+fn factorial_recursive(n:i32) -> i32 {
+    if n < 1 {
+        return 0;
+    } else if n == 1 {
+        return 1;
+    } else {
+        return n * factorial_recursive(n - 1);
+    }
+}
+
+#[test]
+fn test_factorial_recursive() {
+    let result = factorial_recursive(5);
+    println!("Factorial: {}", result);
 }
