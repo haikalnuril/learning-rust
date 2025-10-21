@@ -332,3 +332,61 @@ fn test_factorial_recursive() {
     let result = factorial_recursive(5);
     println!("Factorial: {}", result);
 }
+
+
+// ownership in function
+
+fn print_number(number: i32){
+    println!("number: {}", number)
+}
+
+fn hi(name: String) {
+    println!("name {}", name)
+}
+
+#[test]
+fn test_hi() {
+    let number = 10; // if the function have parameter that type for saving in stack, it will copy the value in stack
+    print_number(number);
+    println!("number {}",number); // so we still can calling the variable in here
+
+    let name = String::from("eko"); // if the function have parameter that type for saving in heap it will move the ownership from variable to the function
+    hi(name)
+    // println!("name {}", name) // so that why this cant be called because no more name in heap
+}
+
+//return value ownership
+
+fn full_name(first_name: String, last_name: String) -> String {
+    format!("{} {}", first_name, last_name)
+}
+
+#[test]
+fn test_full_name() {
+    let first_name = String::from("nuril");
+    let last_name = String::from("abiyit");
+
+    let name = full_name(first_name, last_name);
+    println!("{}", name);
+    // println!("{}", first_name); cant be executed because no more value in that variable
+    // println!("{}", last_name);
+}
+
+// so how we can get back the ownership from the function
+
+fn full_name_returner(first_name: String, last_name: String) -> (String, String, String) {
+    let full_name = format!("{} {}", first_name, last_name);
+
+    (first_name, last_name, full_name)
+}
+
+#[test]
+fn test_full_name_returner() {
+    let first_name = String::from("nuril");
+    let last_name = String::from("abiyit");
+
+    let (first_name, last_name, name) = full_name_returner(first_name, last_name);
+    println!("{}", name);
+    println!("{}", first_name);
+    println!("{}", last_name); 
+}
