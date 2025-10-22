@@ -394,7 +394,7 @@ fn test_full_name_returner() {
 
 // References and Borrowing
 
-fn References_full_name(first_name: &String, last_name: &String) -> String {
+fn references_full_name(first_name: &String, last_name: &String) -> String {
     format!("{} {}", first_name, last_name)
 }
 
@@ -403,7 +403,7 @@ fn references_test() {
     let first_name = String::from("nuril");
     let last_name = String::from("abiyit");
 
-    let full_name = References_full_name(&first_name, &last_name);
+    let full_name = references_full_name(&first_name, &last_name);
     println!("{}", full_name)
 }
 
@@ -443,4 +443,58 @@ fn test_get_full_name() {
 
     let full_name = get_full_name(&first_name, &last_name);
     println!("{}", full_name)
+}
+
+//slicing
+#[test]
+fn slice_reference() {
+    let array: [i32; 10] = [1,2,3,4,5,6,7,8,9,10];
+    let slice1: &[i32] = &array[..];
+    println!("{:?}", slice1);
+
+    let slice2: &[i32] = &array[0..5];
+    println!("{:?}", slice2);
+}
+
+
+//struct
+struct Person {
+    first_name: String,
+    middle_name: String,
+    age: u8,
+}
+
+fn print_person(person: &Person) {
+    println!("{}", person.first_name);
+    println!("{}", person.middle_name);
+    println!("{}", person.age);
+}
+
+#[test]
+fn struct_person() {
+    let first_name = String::from("Haikal");
+    let middle_name = String::from("Nuril");
+    let person: Person = Person {
+        first_name,
+        middle_name,
+        age: 21,
+    };
+
+    // println!("{}", first_name); this is error cause the first_name ownership was move into person.first_name
+    print_person(&person);
+
+    // Struct Update Syntax
+    let person2: Person = Person{..person};
+
+    print_person(&person2); 
+    // but this have a problem if we just do this, cause it will transfer ownership from person to person2 if any field have types that save in heap
+    
+    // solution is
+    let person3: Person = Person{
+        first_name: person2.first_name.clone(),
+        middle_name: person2.middle_name.clone(),
+        age: person2.age.clone(),
+    };
+
+    print_person(&person3);
 }
