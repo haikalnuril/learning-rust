@@ -390,3 +390,57 @@ fn test_full_name_returner() {
     println!("{}", first_name);
     println!("{}", last_name); 
 }
+
+
+// References and Borrowing
+
+fn References_full_name(first_name: &String, last_name: &String) -> String {
+    format!("{} {}", first_name, last_name)
+}
+
+#[test]
+fn references_test() {
+    let first_name = String::from("nuril");
+    let last_name = String::from("abiyit");
+
+    let full_name = References_full_name(&first_name, &last_name);
+    println!("{}", full_name)
+}
+
+// rules borrowing
+// 1. cant change value that we reference even it mutable (default)
+// if want to change the value we can make it &mut in reference and just one mutable reference that allowed in one time
+
+fn change_value(value: &mut String) {
+    value.push_str("test")
+}
+
+#[test]
+fn test_change_value() {
+    let mut value = String::from("Nuril");
+    change_value(&mut value);
+    change_value(&mut value);
+    println!("{}", value)
+
+    //this is that not allowed with rust because it have 2 mutable reference in one cycle life
+    // let valueBorrow1 = &mut value;
+    // let valueBorrow2 = &mut value;
+
+    // change_value(valueBorrow1);
+    // change_value(valueBorrow2);
+}
+
+// Dangling Pointer Solution
+fn get_full_name(first_name: &String, last_name: &String) -> String {
+    let name = format!("{} {}", first_name, last_name);
+    return name;
+}
+
+#[test]
+fn test_get_full_name() {
+    let first_name = String::from("nuril");
+    let last_name = String::from("abiyit");
+
+    let full_name = get_full_name(&first_name, &last_name);
+    println!("{}", full_name)
+}
