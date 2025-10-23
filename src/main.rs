@@ -498,3 +498,22 @@ fn struct_person() {
 
     print_person(&person3);
 }
+
+impl Person {
+    fn say_hello(&self, name: &str) {
+        println!("Hello {}, my name is {}", name, self.first_name)
+    }
+}
+
+#[test]
+fn test_method() {
+    let first_name = String::from("Haikal");
+    let middle_name = String::from("Nuril");
+    let person: Person = Person {
+        first_name,
+        middle_name,
+        age: 21,
+    };
+
+    person.say_hello("agus");
+}
