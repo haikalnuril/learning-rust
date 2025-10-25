@@ -528,9 +528,19 @@ enum Level {
 
 #[test]
 fn test_enum() {
-    let _level1: Level = Level::Regular;
-    let _level2: Level = Level::Premium;
-    let _level3: Level = Level::Platinum;
+    let level: Level = Level::Regular;
+
+    match level {
+        Level::Regular => {
+            println!("Regular")
+        }
+        Level::Premium => {
+            println!("Premium")
+        }
+        Level::Platinum => {
+            println!("Platinum")
+        }
+    }
 }
 
 enum Payment {
@@ -541,7 +551,17 @@ enum Payment {
 
 impl Payment {
     fn pay(&self, amount: u32) {
-        println!("Paying amount: {}", amount)
+        match self {
+            Payment::CreditCard(number) => {
+                println!("Paying with credit card {} amount {}", number, amount)
+            }
+            Payment::BankTransfer(bank, number ) => {
+                println!("Paying with Bank Transfer {} {} amount {}", bank, number, amount)
+            }
+            Payment::Ewallet(wallet, number ) => {
+                println!("Paying with Ewallet {} {} amount {}", wallet, number, amount)
+            }
+        }
     }
 }
 #[test]
@@ -550,4 +570,57 @@ fn test_payment() {
     _payment1.pay(340000);
     let _payment2: Payment = Payment::BankTransfer(String::from("BCA"), String::from("12341234"));
     let _payment3: Payment = Payment::Ewallet(String::from("Gopay"), String::from("12341234"));
+}
+
+#[test]
+fn test_match_value() {
+    let name = "joko";
+
+    match name {
+        "Eko" => {
+            println!("HELLO EKO");
+        }
+        other => {
+            println!("Hello {}", other)
+        }
+    }
+}
+
+#[test]
+fn test_range_patterns() {
+    let value = 100;
+
+    match value {
+        75..=100 => {
+            println!("Great");
+        }
+        50..=74 => {
+            println!("Good");
+        }
+        25..=49 => {
+            println!("Not Bad");
+        }
+        0..=24 => {
+            println!("Bad");
+        }
+        other => {
+            println!("invalid value {}", other);
+        }
+    }
+}
+
+
+#[test]
+fn match_destructuring() {
+    let person = Person {
+        first_name: String::from("Uriel"),
+        middle_name: String::from("Kun"),
+        age: 21
+    };
+    
+    match person {
+        Person {first_name, middle_name, ..} => {
+            println!("First Name: {}, Middle Name: {}", first_name, middle_name)
+        }
+    }
 }
