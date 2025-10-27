@@ -1,7 +1,22 @@
 use std::array;
+mod model;
+mod third;
+
+use model::user::User;
 
 fn main() {
+    let user = User{
+        first_name: String::from("Eko"),
+        last_name: String::from("Kaneddy"),
+        username: String::from("eko"),
+        email: String::from("eko@example.com"),
+        age: 20
+    };
+
+    user.say_hello("Budi");
     println!("Hello, world!");
+
+    model::user::second::say_bye();
 }
 
 #[test]
@@ -624,3 +639,24 @@ fn match_destructuring() {
         }
     }
 }
+
+type Age = u8;
+type IdentityNumber = String;
+
+struct Customer {
+    id: IdentityNumber,
+    name: String,
+    age: Age
+}
+
+#[test]
+fn test_customer() {
+    let customer = Customer {
+        id: String::from("321321"),
+        name: String::from("Eko"),
+        age: 20
+    };
+
+    println!("{} {} {}", customer.id, customer.name, customer.age);
+}
+
