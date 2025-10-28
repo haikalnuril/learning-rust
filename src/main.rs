@@ -1,4 +1,4 @@
-use std::array;
+use std::{array, result};
 mod model;
 mod third;
 
@@ -660,3 +660,120 @@ fn test_customer() {
     println!("{} {} {}", customer.id, customer.name, customer.age);
 }
 
+trait CanSayHello{
+    fn hello(&self)-> String {
+        String::from("Hello")
+    }
+
+    fn say_hello(&self) -> String;
+    fn say_hello_to(&self, name: &str) -> String;
+}
+trait CanSayGoodbye{
+    fn say_good_bye(&self) -> String;
+    fn say_good_bye_to(&self, name: &str) -> String;
+}
+
+impl CanSayHello for Person  {
+    fn say_hello(&self) -> String {
+        format!("Hello, my name is {}", self.first_name)
+    }
+
+    fn say_hello_to(&self, name: &str) -> String {
+        format!("Hello {}, my name is {}", name, self.first_name)
+    }
+}
+
+impl CanSayGoodbye for Person  {
+    fn say_good_bye(&self) -> String {
+        format!("Goodbye from {}", self.first_name)
+    }
+
+    fn say_good_bye_to(&self, name: &str) -> String {
+        format!("Goodbye {} from {}", name, self.first_name)
+    }
+}
+
+fn say_hello_trait(value: &impl CanSayHello) {
+    println!("{}", value.say_hello())
+}
+
+fn say_hello_and_good_bye_trait(value: &(impl CanSayHello + CanSayGoodbye) ) {
+    println!("{}", value.say_hello());
+    println!("{}", value.say_good_bye());
+}
+
+#[test]
+fn test_trait() {
+    let person = Person {
+        first_name: String::from("Eko"),
+        middle_name: String::from("Eko"),
+        age: 20
+    };
+
+    say_hello_trait(&person);
+    say_hello_and_good_bye_trait(&person);
+
+    let result = person.say_hello_to("Budi");
+    println!("{}", result);
+
+    CanSayHello::say_hello(&person);
+    Person::say_hello(&person, "Budi");
+}
+
+struct SimplePerson {
+    name: String
+}
+
+impl CanSayGoodbye for SimplePerson{
+    fn say_good_bye(&self) -> String {
+        format!("Goodbye from {}", self.name)
+    }
+
+    fn say_good_bye_to(&self, name: &str) -> String {
+        format!("Goodbye {}, from {}", name, self.name)
+    }
+}
+
+fn create_person(name:String) -> impl CanSayGoodbye {
+    SimplePerson { name }
+}
+
+#[test]
+fn test_return_trait() {
+    let person = create_person(String::from("Eko"));
+    println!("{}", person.say_good_bye())
+}
+
+
+// inharitence trait or Super trait
+trait CanSay: CanSayHello + CanSayGoodbye {
+
+}
+
+struct SimpleMan {
+    name: String,
+}
+
+impl CanSayHello for SimpleMan  {
+    fn say_hello(&self) -> String {
+        format!("Hello, my name is {}", self.name)
+    }
+
+    fn say_hello_to(&self, name: &str) -> String {
+        format!("Hello {}, my name is {}", name, self.name)
+    }
+}
+
+impl CanSayGoodbye for SimpleMan  {
+    fn say_good_bye(&self) -> String {
+        format!("Goodbye from {}", self.name)
+    }
+
+    fn say_good_bye_to(&self, name: &str) -> String {
+        format!("Goodbye {} from {}", name, self.name)
+    }
+}
+
+impl CanSay for SimpleMan {
+
+}
