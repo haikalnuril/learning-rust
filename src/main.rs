@@ -777,3 +777,51 @@ impl CanSayGoodbye for SimpleMan  {
 impl CanSay for SimpleMan {
 
 }
+
+struct Point <T> {
+    x: T,
+    y: T,
+}
+
+#[test]
+fn test_generic_struct() {
+    let integer = Point::<i32> {
+        x: 10,
+        y: 20,
+    };
+
+    println!("Point integer: {}, {}", integer.x, integer.y);
+}
+
+enum Value <T> {
+    NONE,
+    VALUE(T),
+}
+
+#[test]
+fn test_generic_enum() {
+    let value = Value::<i32>::VALUE(10);
+    match value {
+        Value::NONE => {
+            println!("No Value")
+        }
+        Value::VALUE(v) => {
+            println!("Value: {}", v)
+        }
+    }
+}
+
+struct Hi<T: CanSayGoodbye> {
+    value: T,
+}
+
+#[test]
+fn test_generic_bound() {
+    let hi = Hi::<SimplePerson> {
+        value: SimplePerson {
+            name: String::from("Eko"),
+        },
+    };
+
+    println!("{}", hi.value.say_good_bye());
+}
