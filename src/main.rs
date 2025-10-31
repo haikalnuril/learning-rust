@@ -825,3 +825,48 @@ fn test_generic_bound() {
 
     println!("{}", hi.value.say_good_bye());
 }
+
+fn min <T: PartialOrd>(value1: T, value2: T) -> T {
+    if value1 < value2 {
+        value1
+    } else {
+        value2
+    }
+}
+
+#[test]
+fn test_generic_function() {
+    let result = min(10, 20);
+    println!("Min: {}", result);
+}
+
+impl <T> Point<T> {
+    fn get_x(&self) -> &T {
+        &self.x
+    }
+
+    fn get_y(&self) -> &T {
+        &self.y
+    }
+}
+
+#[test]
+fn test_generic_method() {
+    let point = Point{x: 10, y: 20};
+    println!("x: {}, y: {}", point.get_x(), point.get_y());
+}
+
+// trait GetValue<T> {
+//     fn get_value(&self) -> &T;
+// }
+
+trait GetValue<T> where T: PartialOrd {
+    fn get_value(&self) -> &T;
+}
+
+impl <T> GetValue<T> for Point<T> where T: PartialOrd {
+    fn get_value(&self) -> &T {
+        &self.x
+    }
+}
+
