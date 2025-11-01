@@ -870,3 +870,82 @@ impl <T> GetValue<T> for Point<T> where T: PartialOrd {
     }
 }
 
+use core::ops::Add;
+
+struct Apple {
+    quantity: i32,
+}
+
+impl Add for Apple {
+    type Output = Apple;
+
+    fn add(self, rhs: Self) -> Self::Output {
+        Apple {
+            quantity: self.quantity + rhs.quantity,
+        }
+    }
+}
+
+#[test]
+fn test_apple() {
+    let apple1 = Apple { quantity: 10 };
+    let apple2 = Apple { quantity: 20 };
+
+    let apple3 = apple1 + apple2;
+    println!("Total Apple: {}", apple3.quantity);
+}
+
+fn double(x: Option<i32>) -> Option<i32> {
+    match x {
+        None => None,
+        Some(i) => Some(i * 2),
+    }
+}
+
+#[test]
+fn test_option() {
+    let result = double(Some(10));
+    println!("Result: {:?}", result);
+}
+
+impl PartialEq for Apple {
+    fn eq(&self, other: &Self) -> bool {
+        self.quantity == other.quantity
+    }
+}
+
+impl PartialOrd for Apple {
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        self.quantity.partial_cmp(&other.quantity)
+    }
+}
+
+#[test]
+fn test_compare() {
+    let apple1 = Apple { quantity: 10 };
+    let apple2 = Apple { quantity: 20 };
+
+    if apple1 < apple2 {
+        println!("apple1 is less than apple2");
+    } else if apple1 > apple2 {
+        println!("apple1 is greater than apple2");
+    } else {
+        println!("apple1 is equal to apple2");
+    }
+
+    println!("apple1 == apple2: {}", apple1 == apple2);
+    println!("apple1 != apple2: {}", apple1 != apple2);
+    println!("apple1 < apple2: {}", apple1 < apple2);
+    println!("apple1 > apple2: {}", apple1 > apple2);
+}
+
+#[test]
+fn test_string_manipulation() {
+    let s = String::from("Eko Khannedy");
+
+    println!("{}", s.to_uppercase());
+    println!("{}", s.to_lowercase());
+    println!("{}", s.replace("Khannedy", "Budi"));
+    println!("{}", s.contains("Eko"));
+    println!("{}", s.trim());
+}
