@@ -949,3 +949,30 @@ fn test_string_manipulation() {
     println!("{}", s.contains("Eko"));
     println!("{}", s.trim());
 }
+
+struct Category {
+    id: String,
+    name: String,
+}
+
+use std::fmt::{Debug, Formatter};
+
+impl Debug for Category {
+    fn fmt(&self, f: &mut Formatter<'_>)-> std::fmt::Result {
+        f.debug_struct("Category")
+            .field("id", &self.id)
+            .field("name", &self.name)
+            .field("author", &"Haikal Nuril")
+            .finish()
+    }
+}
+
+#[test]
+fn test_format() {
+    let category = Category {
+        id: String::from("1"),
+        name: String::from("Electronics"),
+    };
+
+    println!("{:?}", category);
+}
