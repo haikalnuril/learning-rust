@@ -1,4 +1,4 @@
-use std::{array, result};
+use std::{array, collections::{LinkedList, VecDeque}, result};
 mod model;
 mod third;
 
@@ -975,4 +975,90 @@ fn test_format() {
     };
 
     println!("{:?}", category);
+}
+
+#[test]
+fn test_closure() {
+    let sum = |value1: i32, value2: i32| -> i32 {
+        value1 + value2
+    };
+
+    let result = sum(10, 20);
+    println!("Result: {}", result);
+}
+
+fn print_with_filter(value: String, filter: fn(String) -> String) {
+    let result = filter(value);
+    println!("Result: {}", result);
+}
+
+#[test]
+fn test_closure_as_parameter() {
+    print_with_filter(String::from("Nuril"), |value: String| -> String {
+        value.to_uppercase()
+    });
+}
+
+fn to_uppercase(value: String) -> String {
+    value.to_uppercase()
+}
+
+#[test]
+fn test_function_as_closure() {
+    print_with_filter(String::from("nuril"), to_uppercase);
+}
+
+struct Counter {
+    counter: i32,
+}
+
+impl Counter {
+    fn increment(&mut self) {
+        self.counter += 1;
+        println!("Counter: {}", self.counter);
+    }
+}
+
+#[test]
+fn test_counter() {
+    let mut counterA = 0;
+
+    let mut counter = Counter{ counter: 0  };
+    counter.increment();
+    counter.increment();
+}
+
+#[test]
+fn test_vector() {
+    let mut names: Vec<String> = Vec::<String>::new();
+    names.push(String::from("Eko"));
+    names.push(String::from("Budi"));
+
+    for name in &names {
+        println!("Name: {}", name);
+    }
+
+    // println!("{:?}", names); // this will error because ownership moved in for loop how to solve it? by adding & in for loop or using clone()
+}
+
+#[test]
+fn test_vecdeque() {
+    let mut names: VecDeque<String> = VecDeque::<String>::new();
+    names.push_back(String::from("Eko"));
+    names.push_back(String::from("Budi"));
+
+    for name in &names {
+        println!("Name: {}", name);
+    }
+}
+
+#[test]
+fn test_linked_list() {
+    let mut names: LinkedList<String> = LinkedList::new();
+    names.push_back(String::from("Eko"));
+    names.push_back(String::from("Budi"));
+
+    for name in &names {
+        println!("Name: {}", name);
+    }
 }
