@@ -1,4 +1,4 @@
-use std::{array, collections::{LinkedList, VecDeque}, result};
+use std::{array, collections::{BTreeMap, BTreeSet, HashMap, HashSet, LinkedList, VecDeque}, result};
 mod model;
 mod third;
 
@@ -1060,5 +1060,52 @@ fn test_linked_list() {
 
     for name in &names {
         println!("Name: {}", name);
+    }
+}
+
+#[test]
+fn test_hash_map() {
+    let mut map: HashMap<String, String>= HashMap::new();
+    map.insert(String::from("name"), String::from("Eko"));
+    map.insert(String::from("age"), String::from("20"));
+
+    let name = map.get("name");
+    println!("Name: {:?}", name.unwrap());
+}
+
+#[test]
+fn test_btree_map() {
+    let mut map:BTreeMap<String, String>= BTreeMap::new();
+    map.insert(String::from("name"), String::from("Eko"));
+    map.insert(String::from("age"), String::from("20"));
+
+    for entry in map {
+        println!("Key: {}, Value: {}", entry.0, entry.1);
+    }
+}
+
+#[test]
+fn test_hash_set() {
+    let mut set: HashSet<String> = HashSet::new();
+    set.insert(String::from("Eko"));
+    set.insert(String::from("Eko"));
+    set.insert(String::from("Kurniawan"));
+    set.insert(String::from("Kurniawan"));
+
+    for value in set {
+        println!("Value: {}", value);
+    }
+}
+
+#[test]
+fn test_btree_set() {
+    let mut set: BTreeSet<String> = BTreeSet::new();
+    set.insert(String::from("Eko"));
+    set.insert(String::from("Eko"));
+    set.insert(String::from("Kurniawan"));
+    set.insert(String::from("Kurniawan"));
+
+    for value in set {
+        println!("Value: {}", value);
     }
 }
