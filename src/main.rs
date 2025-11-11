@@ -1139,3 +1139,74 @@ fn test_iterator_method() {
     println!("Doubled: {:?}", doubled);
 }
 
+fn connect_database(host: Option<String>) {
+    match host {
+        Some(host) => {
+            println!("Connecting to database at {}", host);
+        }
+        None => {
+            panic!("No Database host provided")
+        }
+    }
+}
+
+#[test]
+fn test_panic() {
+    connect_database(Some(String::from("localhost")));
+    connect_database(None);
+}
+
+fn connect_cache(host: Option<String>)-> Result<String, String> {
+    match host {
+        Some(host) => {
+            Ok(format!("Connected to cache at {}", host))
+        }
+        None => {
+            Err(String::from("No Cache host provided"))
+        }
+    }
+}
+fn connect_email(host: Option<String>)-> Result<String, String> {
+    match host {
+        Some(host) => {
+            Ok(format!("Connected to email at {}", host))
+        }
+        None => {
+            Err(String::from("No Email host provided"))
+        }
+    }
+}
+
+#[test]
+fn test_recoverable_error() {
+    let cache = connect_cache(Some(String::from("localhost")));
+    // let cache = connect_cache(None);
+    match cache {
+        Ok(host) => {   
+            println!("Success connect to host : {}", host);
+        }
+        Err(err) => {
+            println!("Failed to connect to cache: {}", err);
+        }
+    }
+}
+
+fn connect_application(host: Option<String>)-> Result<String, String> {
+    let connect_cache = connect_cache(host.clone())?;
+    let connect_email = connect_email(host.clone())?;
+    Ok(format!("Connected to application at {}, {}", connect_cache, connect_email))
+}
+
+#[test]
+fn test_application_error() {
+    let result = connect_application(Some("localhost".to_string()));
+    // let result = connect_application(None);
+    match result {
+        Ok(message) => {
+            println!("Success: {}", message);
+        }
+        Err(err) => {
+            println!("Failed to connect to application: {}", err);
+        }
+    }
+}
