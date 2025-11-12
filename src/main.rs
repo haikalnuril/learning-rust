@@ -1210,3 +1210,62 @@ fn test_application_error() {
         }
     }
 }
+
+#[test]
+fn test_dangling_reference() {
+    let r: &i32;
+    {
+        let x: i32 = 5;
+        // r = &x;
+    }
+    r = &40;
+    println!("r: {}", r); // this will error because x is dropped when the inner scope ends, so r becomes a dangling reference
+}
+
+fn longest<'a>(value1: &'a str, value2: &'a str) -> &'a str {
+    if value1.len() > value2.len() {
+        value1
+    } else {
+        value2
+    }
+}
+
+#[test]
+fn test_parameter_lifetime() {
+    let string1 = String::from("long string");
+    let string2 = String::from("short");
+    let result = longest(&string1, &string2);
+    println!("Longest: {}", result);
+}
+
+struct Student<'a> {
+    name: &'a str,
+}
+
+impl <'a> Student<'a> {
+    fn longest_name(&self, student: &Student<'a>) -> &str {
+        if self.name.len() > student.name.len() {
+            self.name
+        } else {
+            student.name
+        }
+    }
+}
+
+fn longest_student_name<'a>(student1: &'a Student, student2: &'a Student) -> &'a str {
+    if student1.name.len() > student2.name.len() {
+        student1.name
+    } else {
+        student2.name
+    }
+}
+
+#[test]
+fn test_student() {
+    let student1 = Student { name: "Haikal Nuril" };
+    let student2 = Student { name: "Uriel" };
+    let result = longest_student_name(&student1, &student2);
+    println!("Longest name: {}", result);
+
+    println!("Longest name: {}", student1.longest_name(&student2));
+}
