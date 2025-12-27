@@ -1269,3 +1269,34 @@ fn test_student() {
 
     println!("Longest name: {}", student1.longest_name(&student2));
 }
+
+//Attribute
+
+#[derive(Debug, PartialEq, PartialOrd)]
+
+struct Company {
+    name: String,
+    location: String,
+    website: String,
+}
+
+#[test]
+fn test_attribute_derive() {
+    let company = Company {
+        name: String::from("Haikal Nuril"),
+        location: String::from("Bandung"),
+        website: String::from("https://haikalnuril.com"),
+    };
+    let company2 = Company {
+        name: String::from("Haikal Nuril"),
+        location: String::from("Bandung"),
+        website: String::from("https://haikalnuril.com"),
+    };
+    println!("Company: {:#?}", company);
+
+    let result = company == company2;
+    println!("Result: {}", result);
+
+    let result = company < company2;
+    println!("Result: {}", result);
+}
