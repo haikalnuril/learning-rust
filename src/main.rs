@@ -1,4 +1,4 @@
-use std::{array, collections::{BTreeMap, BTreeSet, HashMap, HashSet, LinkedList, VecDeque}, result};
+use std::{array, collections::{BTreeMap, BTreeSet, HashMap, HashSet, LinkedList, VecDeque}, ops::Deref, result};
 mod model;
 mod third;
 
@@ -1333,4 +1333,44 @@ fn test_box_enum() {
         ))
     );
     println!("Category: {:#?}", category);
+}
+
+#[test]
+fn test_dereference() {
+    let value1 = Box::new(10);
+    let value2 = Box::new(20);
+
+    let result = *value1 + *value2;
+    println!("Result: {}", result);
+}
+
+struct MyValue<T> {
+    value: T,
+}
+
+impl<T> Deref for MyValue<T> {
+    type Target = T;
+
+    fn deref(&self) -> &T {
+        &self.value
+    }
+}
+
+#[test]
+fn test_deref() {
+    let value = MyValue { value: 10 };
+    let realValue = *value;
+    println!("Value: {}", realValue);
+}
+
+fn say_hello_reference(name: &String) {
+    println!("Hello, {}", name);
+}
+
+#[test]
+fn test_deref_reference() {
+    let name = MyValue {
+        value: "Haikal Nuril".to_string(),
+    };
+    say_hello_reference(&name);
 }
