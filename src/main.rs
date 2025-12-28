@@ -1300,3 +1300,37 @@ fn test_attribute_derive() {
     let result = company < company2;
     println!("Result: {}", result);
 }
+
+#[test]
+fn test_box() {
+    let value = Box::new(5);
+    println!("Value: {}", value);
+    display_number(*value);
+    display_number_reference(&value);
+}
+
+fn display_number(value: i32) {
+    println!("Number: {}", value);
+}
+
+fn display_number_reference(value: &i32) {
+    println!("Number: {}", value);
+}
+
+#[derive(Debug)]
+enum ProductCategory {
+    Of(String, Box<ProductCategory>),
+    End
+}
+
+#[test]
+fn test_box_enum() {
+    let category = ProductCategory::Of(
+        "Laptop".to_string(),
+        Box::new(ProductCategory::Of(
+            "Dell".to_string(),
+            Box::new(ProductCategory::End)
+        ))
+    );
+    println!("Category: {:#?}", category);
+}
