@@ -1,4 +1,4 @@
-use std::{array, collections::{BTreeMap, BTreeSet, HashMap, HashSet, LinkedList, VecDeque}, ops::Deref, result};
+use std::{array, collections::{BTreeMap, BTreeSet, HashMap, HashSet, LinkedList, VecDeque}, ops::Deref, rc::Rc, result};
 mod model;
 mod third;
 
@@ -1391,4 +1391,24 @@ fn test_drop() {
         title: "Rust in Action".to_string(),
     };
     println!("Book: {}", book.title);
+}
+
+// multiple ownership
+
+enum Brand {
+    Of(String, Rc<Brand>),
+    End
+}
+
+#[test]
+fn test_multiple_ownership() {
+    // let apple = ProductCategory::Of("Apple".to_string(), Box::new(ProductCategory::End));
+    // let laptop = ProductCategory::Of("Laptop".to_string(), Box::new(apple));
+    // let phone = ProductCategory::Of("Phone".to_string(), Box::new(apple));
+
+    let apple = Rc::new(Brand::Of("Apple".to_string(), Rc::new(Brand::End)));
+    println!("Apple reference count: {}", Rc::strong_count(&apple));
+    let laptop = Brand::Of("Laptop".to_string(), Rc::clone(&apple));
+    println!("Apple reference count: {}", Rc::strong_count(&apple));
+
 }
