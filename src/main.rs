@@ -1438,3 +1438,23 @@ fn test_ref_cell() {
     println!("Seller: {:#?}", seller);
 }
 
+// static
+static mut APPLICATION: &str = "Learning Rust";
+static APPLICATION2: &str = "Learning Rust";
+
+#[test]
+fn test_static() {
+    println!("Application: {}", APPLICATION2);
+}
+
+//the difference between static and const is that static is mutable while const is not. and in static we use unsafe block to modify the value. 
+// unsafe block is used to tell the compiler that we are aware of the risk of undefined behavior.
+#[test]
+fn test_static_mut() {
+    unsafe {
+        println!("Application: {}", APPLICATION);
+        APPLICATION = "Learning Rust 2";
+        println!("Application: {}", APPLICATION);
+    }
+}
+
