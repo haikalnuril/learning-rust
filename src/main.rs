@@ -1452,9 +1452,46 @@ fn test_static() {
 #[test]
 fn test_static_mut() {
     unsafe {
-        println!("Application: {}", APPLICATION);
+        let output = APPLICATION;
+        println!("Application: {}", output);
         APPLICATION = "Learning Rust 2";
-        println!("Application: {}", APPLICATION);
+        let output = APPLICATION;
+        println!("Application: {}", output);
     }
 }
 
+// macro
+macro_rules! hi {
+    () => {
+        println!("Hi!");
+    };
+    ($name: expr) => {
+        println!("Hi {}", $name);
+    }
+}
+
+macro_rules! iterate {
+    ($array:expr) => {
+        for i in $array {
+            println!("{}", i);
+        }
+    };
+    ($($item: expr), *) => {
+        $(
+            println!("{}", $item);
+        )*
+    }
+}
+
+#[test]
+fn test_macro() {
+    hi!();
+    hi!("Haikal Nuril");
+
+}
+
+#[test]
+fn test_macro_iterate() {
+    iterate!(1, 2, 3, 4, 5);
+    iterate!([1, 2, 3, 4, 5]);
+}
