@@ -1,4 +1,4 @@
-use std::{array, collections::{BTreeMap, BTreeSet, HashMap, HashSet, LinkedList, VecDeque}, ops::Deref, rc::Rc, result};
+use std::{array, cell::RefCell, collections::{BTreeMap, BTreeSet, HashMap, HashSet, LinkedList, VecDeque}, ops::Deref, rc::Rc, result};
 mod model;
 mod third;
 
@@ -1412,3 +1412,29 @@ fn test_multiple_ownership() {
     println!("Apple reference count: {}", Rc::strong_count(&apple));
 
 }
+
+
+// reference cell
+#[derive(Debug)]
+struct Seller {
+    name: RefCell<String>,
+    active: RefCell<bool>,
+}
+
+#[test]
+fn test_ref_cell() {
+    let seller = Seller {
+        name: RefCell::new("Haikal Nuril".to_string()),
+        active: RefCell::new(true),
+    };
+    println!("Seller: {:#?}", seller);
+
+    {
+        let mut result = seller.name.borrow_mut();
+        *result = "Uriel".to_string();
+        println!("Seller: {:#?}", seller);
+        println!("result: {:?}", result);
+    }
+    println!("Seller: {:#?}", seller);
+}
+
